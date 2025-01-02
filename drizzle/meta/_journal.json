@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1735744165847,
+      "tag": "0000_low_darwin",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1735747075485,
+      "tag": "0001_calm_silvermane",
+      "breakpoints": true
+    }
+  ]
+}
