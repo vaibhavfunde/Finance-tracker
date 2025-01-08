@@ -15,6 +15,20 @@
       "when": 1735747075485,
       "tag": "0001_calm_silvermane",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1736056975399,
+      "tag": "0002_overjoyed_spyke",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1736085546594,
+      "tag": "0003_gifted_lilith",
+      "breakpoints": true
     }
   ]
 }
