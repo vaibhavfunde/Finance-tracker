@@ -13,3 +13,12 @@ export function convertAmountFromMiliunsits(amount:number){
 export function convertAmountToMiliunsits(amount:number){
   return Math.round(amount*1000)
 }
+
+export function formatCurrency(value: number) {
+  const finalValue = convertAmountFromMiliunsits(value)
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+  }).format(finalValue);
+}

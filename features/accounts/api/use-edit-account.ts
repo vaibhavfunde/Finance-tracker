@@ -16,8 +16,9 @@ export const useEditAccount= (id?:string)=>{
     RequestType>({
         mutationFn: async(json)=>{
             const response = await client.api.accounts[":id"]["$patch"]({
-                param:{id},
                 json,
+                param:{id},
+               
                
             });
             return await response.json();
@@ -26,6 +27,7 @@ export const useEditAccount= (id?:string)=>{
             toast.success("Account updated")
             queryClient.invalidateQueries({queryKey:["account",{id}]})
             queryClient.invalidateQueries({queryKey:["accounts"]})
+            queryClient.invalidateQueries({queryKey:["transactions"]})
         },
         onError:()=>{
         toast.error("Failed to edit account")

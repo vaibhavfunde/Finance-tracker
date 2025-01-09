@@ -15,7 +15,7 @@ export const useGetAccount= (id?:string) =>{
                 throw new Error("Failed to Fetch account")
             }
 
-            const data = await response.json()
+            const {data} = await response.json()
             return data
         }
     })

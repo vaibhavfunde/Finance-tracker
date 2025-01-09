@@ -43,8 +43,8 @@ const app = new Hono()
       const startDate = from
       ?parse(from,"yyyy-MM-dd",new Date()):defaultFrom;
 
-      const endDate = from
-      ?parse(from,"yyyy-MM-dd",new Date()):defaultTo;
+      const endDate = to
+      ?parse(to,"yyyy-MM-dd",new Date()):defaultTo;
 
     const data = await db
     .select({
