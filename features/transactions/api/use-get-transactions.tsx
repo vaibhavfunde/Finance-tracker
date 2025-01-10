@@ -24,7 +24,7 @@ export const useGetTransactions = () =>{
                 throw new Error("Failed to Fetch Transaction")
             }
 
-            const data = await response.json()
+            const {data} = await response.json()
             return data
         }
     })
