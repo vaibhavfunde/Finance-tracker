@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ImportTable } from "./import-table";
 
-import { convertAmountToMiliunsits } from "@/lib/utils";
+import { convertAmountToMiliunits } from "@/lib/utils";
 import { format, parse } from "date-fns";
 import { toast } from "sonner";
 
@@ -161,7 +161,7 @@ const formattedData = arrayOfData.map((item) => {
 
   return {
     ...item,
-    amount: amount ? convertAmountToMiliunsits(amount) : 0,
+    amount: amount ? convertAmountToMiliunits(amount) : 0,
     date: date ? format(date, outputFormat) : "", 
   };
 })// Remove null entries
