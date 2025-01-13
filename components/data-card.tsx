@@ -3,7 +3,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn, formatCurrency, formatPercentage } from '@/lib/utils';
-import { CountUp } from '@/components/count-up';
+import { CountUp } from "@/components/count-up";
 import {
   Card,
   CardContent,
@@ -51,6 +51,9 @@ interface DataCardProps extends BoxVariants, IconVariants {
   percentageChange?: number;
 }
 
+
+
+
 export const DataCard = ({
   icon: Icon,
   title,
@@ -85,7 +88,7 @@ export const DataCard = ({
             formattingFn={formatCurrency}
           />
         </h1>
-        <p
+        {/* <p
           className={cn(
             'text-muted-foreground text-sm line-clamp-1',
             percentageChange > 0 && 'text-emerald-500',
@@ -94,7 +97,19 @@ export const DataCard = ({
         >
           {formatPercentage(percentageChange, { addPrefix: true })} from last
           period
-        </p>
+        </p> */}
+        <p
+  className={cn(
+    'text-muted-foreground text-sm line-clamp-1',
+    percentageChange > 0 ? 'text-emerald-500' : '',
+    percentageChange < 0 ? 'text-rose-500' : ''
+  )}
+>
+  {percentageChange !== 0
+    ? `${formatPercentage(percentageChange, { addPrefix: true })} from last period`
+    : 'No change from last period'}
+</p>
+
       </CardContent>
     </Card>
   );
