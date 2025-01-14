@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
@@ -33,4 +33,51 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details. -->
+
+
+# Finance Tracker
+
+Finance Tracker is a web application designed to help users manage their finances effectively by tracking expenses, income, and budgets. Built with Next.js, it utilizes modern tools and libraries to ensure a seamless and feature-rich user experience.
+
+---
+
+## Features
+
+- Track income and expenses with intuitive input forms.
+- Generate insightful financial reports and visualizations.
+- Import and export data in CSV format.
+- Responsive design for desktop and mobile devices.
+- Dark and light theme support.
+- Secure user authentication and data storage.
+
+---
+
+## Technologies Used
+
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: Drizzle ORM, PostgreSQL
+- **State Management**: Zustand
+- **Form Handling**: React Hook Form
+- **Data Visualization**: Recharts
+- **Date Handling**: Date-fns
+- **Authentication**: Clerk
+- **Other Utilities**: Papaparse, Zod, TanStack Query
+
+---
+
+## Getting Started
+
+Follow these steps to set up the project locally:
+
+### Prerequisites
+
+- Node.js v20+
+- PostgreSQL database
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd finance-tracker
