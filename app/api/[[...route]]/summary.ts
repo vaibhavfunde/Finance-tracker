@@ -1,253 +1,3 @@
-// import { z } from "zod";
-// import { Hono } from "hono";
-// import { zValidator } from "@hono/zod-validator";
-// import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
-// import { subDays, parse, differenceInDays } from "date-fns";
-
-// import { db } from "@/db/drizzle";
-// import { and, desc, eq, gte, lt, lte, sql, sum } from "drizzle-orm";
-// import { accounts, categories, transactions } from "@/db/schema";
-// import { calculatePercentageChange, fillMissingDays } from "@/lib/utils";
-
-// const app = new Hono()
-//     .get(
-//         "/",
-//         clerkMiddleware(),
-//         zValidator(
-//             "query",
-//             z.object({
-//                 from: z.string().optional(),
-//                 to: z.string().optional(),
-//                 accountId: z.string().optional(),
-//             }),
-//         ),
-//         async (c) => {
-//             const auth = getAuth(c);
-//             const { from, to, accountId } = c.req.valid("query");
-
-//             if (!auth?.userId) {
-//                 return c.json({ error: "Unauthorized" }, 401);
-//             }
-
-//             const defaultTo = new Date();
-//             const defaultFrom = subDays(defaultTo, 30);
-
-//           const startDate = from
-//                ? parse(from, "yyyy-MM-dd", new Date())
-//              : defaultFrom;
-//            const endDate = to
-//                ? parse(to, "yyyy-MM-dd", new Date())
-//               : defaultTo;
-
-//             const periodLength = differenceInDays(endDate, startDate) + 1;
-//              const lastPeriodStart = subDays(startDate, periodLength);
-//              const lastPeriodEnd = subDays(endDate, periodLength);
-
-//         //     async function fetchFinancialData(
-//         //         userId: string,
-//         //         startDate: Date,
-//         //         endDate: Date,
-//         //     ) {
-//         //         return await db
-//         //         return await db
-//         //         .select({
-//         //             income: sql`COALESCE(SUM(CASE WHEN ${transactions.amount} >= 0 THEN ${transactions.amount} ELSE 0 END), 0)`.mapWith(Number),
-//         //             expenses: sql`COALESCE(SUM(CASE WHEN ${transactions.amount} < 0 THEN ${transactions.amount} ELSE 0 END), 0)`.mapWith(Number),
-//         //             remaining: sql`COALESCE(SUM(${transactions.amount}), 0)`.mapWith(Number),
-//         //         })
-//         //         .from(transactions)
-//         //         .innerJoin(
-//         //             accounts,
-//         //             eq(transactions.accountId, accounts.id),
-//         //         )
-//         //         .where(
-//         //             and(
-//         //                 accountId ? eq(transactions.accountId, accountId) : true,
-//         //                 eq(accounts.userId, userId),
-//         //                 gte(transactions.date, startDate),
-//         //                 lte(transactions.date, endDate),
-//         //             )
-//         //         );
-            
-//         //   };
-
-
-//         async function fetchFinancialData(
-//             userId: string,
-//             startDate: Date,
-//             endDate: Date
-//           ) {
-//             return await db
-//               .select({
-//                 income: sql`COALESCE(sum(CASE WHEN ${transactions.amount} >= 0 THEN ${transactions.amount} ELSE 0 END), 0)`.mapWith(Number),
-//                 expenses: sql`COALESCE(sum(CASE WHEN ${transactions.amount} < 0 THEN ${transactions.amount} ELSE 0 END), 0)`.mapWith(Number),
-//                 remaining: sql`COALESCE(sum(${transactions.amount}), 0)`.mapWith(Number),
-                
-//               })
-//               .from(transactions)
-//               .innerJoin(
-//                 accounts,
-//                 eq(transactions.accountId, accounts.id)
-//               )
-//               .where(
-//                 and(
-//                     eq(accounts.userId, userId),
-//                     gte(transactions.date, startDate),
-//                     lte(transactions.date, endDate)
-//                 )
-//             )
-            
-//           }
-          
-
-
-//           console.log("lastPeriodStart",lastPeriodStart)
-
-//             const [currentPeriod] = await fetchFinancialData(
-//                 auth.userId,
-//                 startDate,
-//                 endDate
-//             );
-//             // const [lastPeriod] = await fetchFinancialData(
-//             //      auth.userId,
-//             //      lastPeriodStart,
-//             //      lastPeriodEnd,
-//             //     // lastPeriodStart,   //error
-//             //     // lastPeriodEnd
-               
-//             // );
-         
-//             console.log("Fetching data for last period:", lastPeriodStart, "to", lastPeriodEnd);
-//             const [lastPeriod] = await fetchFinancialData(
-//                 auth.userId,
-//                 lastPeriodStart,
-//                 lastPeriodEnd,
-//             );
-//             console.log("lastPeriod data:", lastPeriod);
-            
-            
-
-           
-//             console.log("income", currentPeriod.expenses)
-
-//             const incomeChange = calculatePercentageChange(currentPeriod.income, lastPeriod.income);
-
-              
-//               const expenseChange = calculatePercentageChange(
-//                 currentPeriod.expenses,
-//                 lastPeriod.expenses
-//               ) ;
-              
-//               const remainingChange = calculatePercentageChange(
-//                 currentPeriod.remaining,
-//                 lastPeriod.remaining
-//               );
-//             const category = await db
-//                  .select({
-//                      name: categories.name,
-//                     value: sql`sum(ABS(${transactions.amount}))`.mapWith(Number),
-//                 })
-//                  .from(transactions)
-//                  .innerJoin(
-//                      accounts,
-//                      eq(
-//                          transactions.accountId,
-//                          accounts.id,
-//                      ),
-//                  )
-//                  .innerJoin(
-//                     categories,
-//                     eq(
-//                        transactions.categoryId,
-//                         categories.id,
-//                     )
-//                 )
-//                  .where(
-//                      and(
-//                          accountId ? eq(transactions.accountId, accountId) : undefined,
-//                          eq(accounts.userId, auth.userId),
-//                          lt(transactions.amount, 0),
-//                          gte(transactions.date, startDate),
-//                          lte(transactions.date, endDate),
-//                      )
-//                  )
-//                 .groupBy(
-//                     categories.name
-//                 )
-//                  .orderBy(desc(
-//                      sql`sum(ABS(${transactions.amount}))`
-//                  ));
-
-//              const topCategories = category.slice(0, 3);
-//              const otherCategories = category.slice(3);
-
-//             const otherSum = otherCategories
-//                 .reduce((sum, current) => sum + current.value, 0);
-
-//             const finalCategories = topCategories;
-
-//             if (otherCategories.length > 0) {
-//                 finalCategories.push({
-//                     name: "Other",
-//                     value: otherSum,
-//                 });
-//             }
-
-//             const activeDays = await db
-//                  .select({
-//                      date: transactions.date,
-//                      income: sql`sum(CASE WHEN ${transactions.amount} >= 0 THEN ${transactions.amount} ELSE 0 END)`.mapWith(Number),
-//                      expenses: sql`sum(CASE WHEN ${transactions.amount} < 0 THEN ABS(${transactions.amount}) ELSE 0 END)`.mapWith(Number),
-//                  })
-//                 .from(transactions)
-//                 .innerJoin(
-//                     accounts,
-//                     eq(
-//                         transactions.accountId,
-//                         accounts.id,
-//                     ),
-//                 )
-//                 .where(
-//                     and(
-//                         accountId ? eq(transactions.accountId, accountId) : undefined,
-//                         eq(accounts.userId, auth.userId),
-//                         gte(transactions.date, startDate),
-//                         lte(transactions.date, endDate),
-//                     )
-//                 )
-//                 .groupBy(transactions.date)
-//                 .orderBy(transactions.date);
-
-//             const days = fillMissingDays(
-//                 activeDays,
-//                 startDate,
-//                 endDate,
-//            );
-
-//            console.log("lastPeriodStart", lastPeriodStart);
-// console.log("lastPeriodEnd", lastPeriodEnd);
-
-
-//              return c.json({
-//                  data: {
-                    
-//                     remainingAmount: currentPeriod.remaining,
-//                      remainingChange,
-//                      incomeAmount: currentPeriod.income,
-//                      incomeChange,
-//                      expensesAmount: currentPeriod.expenses,
-//                      expenseChange,
-//                      finalCategories,
-//                     categories: finalCategories,
-//                      days,
-//                  },
-//             });
-//        },
-//   );
-
-// export default app;
-
-
 import { z } from "zod";
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
@@ -290,8 +40,8 @@ const app = new Hono()
                 : defaultTo;
 
             const periodLength = differenceInDays(endDate, startDate) + 1;
-            const lastPeriodStart = subDays(startDate, periodLength);
-            const lastPeriodEnd = subDays(endDate, periodLength);
+            const lastPeriodStart = subDays(endDate, periodLength); 
+            const lastPeriodEnd = endDate;
 
             async function fetchFinancialData(
                 userId: string,
@@ -322,10 +72,6 @@ const app = new Hono()
                     );
             };
 
-
-           
-            
-            
             const [currentPeriod] = await fetchFinancialData(
                 auth.userId,
                 startDate,
@@ -336,7 +82,7 @@ const app = new Hono()
                 lastPeriodStart,
                 lastPeriodEnd
             );
-            console.log(lastPeriodEnd)
+
             const incomeChange = calculatePercentageChange(
                 currentPeriod.income,
                 lastPeriod.income,
@@ -351,7 +97,7 @@ const app = new Hono()
                 currentPeriod.remaining,
                 lastPeriod.remaining
             );
-
+            console.log({ incomeChange, expenseChange, remainingChange });
             const category = await db
                 .select({
                     name: categories.name,

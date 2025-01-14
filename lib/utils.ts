@@ -136,27 +136,41 @@ export function formatCurrency(value: number) {
   }).format(value);
 };
 
+export function calculatePercentageChange(
+  current: number,
+  previous: number,
+) {
+  console.log("current", current, "previous", previous)
+  if (previous === 0) {
+    return previous === current ? 0 : 100;
+  }
+
+  return ((current - previous) / previous) * 100;
+};
+
 // export function calculatePercentageChange(
 //   current: number,
 //   previous: number,
-// ) {
+// ): number {
 //   if (previous === 0) {
-//     return previous === current ? 0 : 100;
+//     // If the previous value is 0, return 100% change for non-zero current values, otherwise 0%.
+//     return current === 0 ? 0 : 100;
 //   }
 
+//   // Calculate the percentage change when the previous value is non-zero.
 //   return ((current - previous) / previous) * 100;
-// };
+// }
 
+// export function calculatePercentageChange(current: number, previous: number): number {
+//   if (previous === 0 && current === 0) {
 
-export function calculatePercentageChange(current: number, previous: number): number {
-  if (previous === 0 && current === 0) {
-      return 0; // No change if both are zero
-  }else{
-    return 100;
-  }
+//       return 0; // No change if both are zero
+//   }else{
+//     return 100;
+//   }
   
-  return ((current - previous) / previous) * 100;
-}
+//   return ((current - previous) / previous) * 100;
+// }
 
 
 
